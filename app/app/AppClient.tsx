@@ -11,6 +11,7 @@ import { Alerts } from "./tabs/Alerts";
 import { TripModal, type TripInput } from "./components/TripModal";
 import { ProfileModal, type ProfileInput } from "./components/ProfileModal";
 import { saveTrip, deleteTrip, saveProfile, logout } from "./actions";
+import ThemeToggle from "@/components/ThemeToggle";
 
 type Tab = "summary" | "status" | "travel" | "alerts";
 
@@ -61,6 +62,7 @@ export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] 
           <span className="dot">●</span> {profile.handle || "resident"} <span className="cat">· {cat}</span>
         </span>
         <span className="spacer"></span>
+        <ThemeToggle />
         <button className="mini" onClick={() => setProfileOpen(true)} title="edit profile">⚙ profile</button>
         <button className="mini logout" onClick={() => startTransition(() => { logout(); })} title="sign out">⏻ logout</button>
       </div>

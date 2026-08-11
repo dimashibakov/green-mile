@@ -7,6 +7,7 @@ create table if not exists public.profiles (
   category       text default 'E16',
   resident_since date,
   card_expires   date,
+  theme          text not null default 'dark' check (theme in ('dark','light')),
   updated_at     timestamptz default now()
 );
 

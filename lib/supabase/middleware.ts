@@ -29,18 +29,41 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!request.cookies.get("gm-theme")) {
+    if (user) {
+      const { data } = await supabase
+        .from("profiles")
+        .select("theme")
+        .eq("id", user.id)
+        .single();
+      const t = data?.theme === "light" ? "light" : "dark";
+      response.cookies.set("gm-theme", t, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 365,
+        sameSite: "lax",
+      });
+    }
+  }
+
   const path = request.nextUrl.pathname;
   const isAuthPage = path === "/login" || path === "/register";
+
+  const themeOpts = { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" as const };
+  const themeCookie = response.cookies.get("gm-theme");
 
   if (!user && path.startsWith("/app")) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    return NextResponse.redirect(url);
+    const redirect = NextResponse.redirect(url);
+    if (themeCookie) redirect.cookies.set("gm-theme", themeCookie.value, themeOpts);
+    return redirect;
   }
   if (user && isAuthPage) {
     const url = request.nextUrl.clone();
     url.pathname = "/app";
-    return NextResponse.redirect(url);
+    const redirect = NextResponse.redirect(url);
+    if (themeCookie) redirect.cookies.set("gm-theme", themeCookie.value, themeOpts);
+    return redirect;
   }
 
   return response;

@@ -4,6 +4,7 @@ export type Profile = {
   category: string | null;
   resident_since: string | null; // yyyy-mm-dd
   card_expires: string | null;   // yyyy-mm-dd
+  theme?: "dark" | "light";
 };
 
 export type Trip = {

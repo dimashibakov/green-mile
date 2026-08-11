@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -7,8 +8,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const c = cookies().get("gm-theme")?.value;
+  const theme: "dark" | "light" = c === "light" ? "light" : "dark";
+
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
