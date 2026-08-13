@@ -82,13 +82,13 @@ body{
 .cmd-link:hover{text-decoration:underline}
 .err{color:var(--red);font-style:italic;min-height:20px;margin-top:8px}
 .err:empty{margin:0}
-.appbar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line-soft);background:linear-gradient(#121a25,#0e141d)}
+.appbar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line-soft);background:var(--screen)}
 .appbar .who{color:var(--text);font-weight:700}
 .appbar .who .dot{color:var(--green)}
 .appbar .who .cat{color:var(--orange);font-weight:400}
 .appbar .spacer{flex:1}
-.appbar .mini{background:none;border:none;color:var(--dim);font-family:var(--mono);font-size:14px;cursor:pointer;padding:4px 6px;border-radius:7px}
-.appbar .mini:hover{color:var(--text);background:#182231}
+.appbar .mini{background:var(--btn);border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:14px;cursor:pointer;padding:4px 6px;border-radius:7px}
+.appbar .mini:hover{color:var(--text);background:var(--panel-2)}
 .appbar .mini.logout:hover{color:var(--red)}
 .tabs{display:flex;border-bottom:1px solid var(--line)}
 .tab{appearance:none;background:none;border:none;color:var(--dim);font-family:var(--mono);font-size:14px;font-weight:700;padding:13px 6px 11px;flex:1;cursor:pointer;position:relative;transition:color .15s}

@@ -1,11 +1,21 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Green Mile · i-551 migration tracker",
-  description: "Residency & travel tracker for U.S. permanent residents.",
+  applicationName: "Green Mile",
+  title: { default: "Green Mile", template: "%s · Green Mile" },
+  description: "US green-card presence & travel-compliance tracker.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, title: "Green Mile", statusBarStyle: "black-translucent" },
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png" }],
+    shortcut: ["/favicon.ico"],
+  },
 };
+
+export const viewport: Viewport = { themeColor: "#0a0e15" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const c = cookies().get("gm-theme")?.value;
