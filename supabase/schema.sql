@@ -25,9 +25,25 @@ create table if not exists public.trips (
 );
 create index if not exists trips_user_idx on public.trips(user_id, departed);
 
+-- ---------- news (USCIS + DHS feeds, ingested via service role) ----------
+create table if not exists public.news (
+  id uuid primary key default gen_random_uuid(),
+  source text not null check (source in ('USCIS','DHS')),
+  category text,
+  title text not null,
+  link text not null,
+  summary text,
+  published_at timestamptz,
+  guid text not null,
+  fetched_at timestamptz not null default now(),
+  unique (source, guid)
+);
+create index if not exists news_published_idx on public.news (published_at desc nulls last);
+
 -- ---------- Row Level Security ----------
 alter table public.profiles enable row level security;
 alter table public.trips    enable row level security;
+alter table public.news     enable row level security;
 
 drop policy if exists "own profile" on public.profiles;
 create policy "own profile" on public.profiles
@@ -36,6 +52,10 @@ create policy "own profile" on public.profiles
 drop policy if exists "own trips" on public.trips;
 create policy "own trips" on public.trips
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+drop policy if exists "news readable by authenticated" on public.news;
+create policy "news readable by authenticated" on public.news
+  for select to authenticated using (true);
 
 -- ---------- auto-create profile from sign-up metadata ----------
 create or replace function public.handle_new_user()

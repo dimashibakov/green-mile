@@ -168,6 +168,9 @@ hr.sep{border:none;border-top:1px solid var(--line-soft);margin:10px 0}
 .alert.warn .h{color:var(--red)} .alert.goal .h{color:var(--purple)}
 .alert .d{color:var(--comment);font-style:italic;font-size:14px}
 .alert .d .code{color:var(--dim);font-style:normal}
+.alert:has(.ahead){flex-direction:column;align-items:stretch;gap:4px}
+.alert .ahead{display:flex;justify-content:space-between;align-items:baseline;font-weight:700;font-size:14px;width:100%}
+.alert .abody{color:var(--comment);font-style:italic;font-size:14px}
 .empty{color:var(--comment);font-style:italic;padding:10px 0}
 .empty .cmd-link{font-style:normal}
 .panel-tab{display:none}

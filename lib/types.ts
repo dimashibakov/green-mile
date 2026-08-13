@@ -17,3 +17,13 @@ export type Trip = {
   returned: string | null;  // null = ongoing
   reason: string | null;
 };
+
+export type NewsItem = {
+  id: string;
+  source: "USCIS" | "DHS";
+  category: string | null;
+  title: string;
+  link: string;
+  summary: string | null;
+  published_at: string | null;
+};

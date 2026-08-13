@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import type { Profile, Trip } from "@/lib/types";
+import type { Profile, Trip, NewsItem } from "@/lib/types";
 import { derive, iso } from "@/lib/residency";
 import { Summary } from "./tabs/Summary";
 import { Status } from "./tabs/Status";
@@ -12,10 +12,19 @@ import { TripModal, type TripInput } from "./components/TripModal";
 import { ProfileModal, type ProfileInput } from "./components/ProfileModal";
 import { saveTrip, deleteTrip, saveProfile, logout } from "./actions";
 import ThemeToggle from "@/components/ThemeToggle";
+import NewsTab from "@/components/NewsTab";
 
-type Tab = "summary" | "status" | "travel" | "alerts";
+type Tab = "summary" | "status" | "travel" | "alerts" | "news";
 
-export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] }) {
+export function AppClient({
+  profile,
+  trips,
+  initialNews,
+}: {
+  profile: Profile;
+  trips: Trip[];
+  initialNews: NewsItem[];
+}) {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [tab, setTab] = useState<Tab>("summary");
@@ -68,7 +77,7 @@ export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] 
       </div>
 
       <div className="tabs" role="tablist" aria-label="Views">
-        {(["summary", "status", "travel", "alerts"] as Tab[]).map((t) => (
+        {(["summary", "status", "travel", "alerts", "news"] as Tab[]).map((t) => (
           <button
             key={t}
             className="tab"
@@ -93,6 +102,14 @@ export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] 
         />
       )}
       {tab === "alerts" && <Alerts D={D} cat={cat} />}
+      {tab === "news" && (
+        <div className="panel-tab active" role="tabpanel">
+          <div className="body">
+            <div className="comment">// USCIS &amp; DHS updates from the ingestion gateway.</div>
+            <NewsTab items={initialNews} />
+          </div>
+        </div>
+      )}
 
       <div className="foot">// working tracker, not legal advice · data as of <b>{iso(D.t)}</b></div>
 
