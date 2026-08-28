@@ -10,9 +10,9 @@ import { Gauge } from "../components/Gauge";
 import { PromptBar } from "../components/PromptBar";
 
 export function Status({
-  D, profile, cat, onEditProfile,
+  D, profile, cat, onEditProfile, onExport,
 }: {
-  D: Derived; profile: Profile; cat: string; onEditProfile: () => void;
+  D: Derived; profile: Profile; cat: string; onEditProfile: () => void; onExport?: () => void;
 }) {
   const ppPct = Math.min(1, D.present / PRESENCE_NEEDED);
   const natzLeft = daysB(D.t, D.natzFile);
@@ -58,7 +58,7 @@ export function Status({
 
   return (
     <div className="panel-tab active" role="tabpanel">
-      <PromptBar cat={cat} cmd="status" />
+      <PromptBar cat={cat} cmd="status" onExport={onExport} />
       <div className="body">
         <div className="comment">// lawful permanent resident. <span className="em">{headline}</span></div>
         <div className="metaline">🗓 {WD[D.t.getDay()]}  {iso(D.t)}</div>

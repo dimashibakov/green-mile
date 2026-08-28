@@ -7,10 +7,10 @@ import { Hbar } from "../components/Hbar";
 import { PromptBar } from "../components/PromptBar";
 
 export function Travel({
-  D, cat, onAdd, onEdit, onDelete,
+  D, cat, onAdd, onEdit, onDelete, onExport,
 }: {
   D: Derived; cat: string;
-  onAdd: () => void; onEdit: (t: Trip) => void; onDelete: (id: string) => void;
+  onAdd: () => void; onEdit: (t: Trip) => void; onDelete: (id: string) => void; onExport?: () => void;
 }) {
   const countries = byCountry(D);
   const maxC = countries.reduce((m, c) => Math.max(m, c.days), 0);
@@ -19,7 +19,7 @@ export function Travel({
 
   return (
     <div className="panel-tab active" role="tabpanel">
-      <PromptBar cat={cat} cmd="travel --log" />
+      <PromptBar cat={cat} cmd="travel --log" onExport={onExport} />
       <div className="body">
         <div className="comment">
           // <span className="em">{D.trips.length} trips logged · {D.totalAbroad} days abroad total.</span>
