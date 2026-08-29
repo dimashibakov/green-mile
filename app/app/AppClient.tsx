@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import type { Profile, Trip, NewsItem } from "@/lib/types";
+import type { Profile, Trip } from "@/lib/types";
 import { derive, iso } from "@/lib/residency";
 import { Summary } from "./tabs/Summary";
 import { Status } from "./tabs/Status";
@@ -10,32 +10,34 @@ import { Travel } from "./tabs/Travel";
 import { Alerts } from "./tabs/Alerts";
 import { TripModal, type TripInput } from "./components/TripModal";
 import { ProfileModal, type ProfileInput } from "./components/ProfileModal";
+import { AppBar } from "./components/AppBar";
+import { StatusStrip } from "./components/StatusStrip";
 import { saveTrip, deleteTrip, saveProfile, logout } from "./actions";
-import ThemeToggle from "@/components/ThemeToggle";
-import NewsTab from "@/components/NewsTab";
+import { setTheme as persistTheme } from "@/app/actions/theme";
 
-type Tab = "summary" | "status" | "travel" | "alerts" | "news";
+type Tab = "summary" | "status" | "travel" | "alerts";
+type Theme = "dark" | "light";
 
-export function AppClient({
-  profile,
-  trips,
-  initialNews,
-}: {
-  profile: Profile;
-  trips: Trip[];
-  initialNews: NewsItem[];
-}) {
+export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] }) {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [tab, setTab] = useState<Tab>("summary");
   const [tripModal, setTripModal] = useState<{ open: boolean; trip: Trip | null }>({ open: false, trip: null });
   const [profileOpen, setProfileOpen] = useState(false);
+  const [theme, setTheme] = useState<Theme>("dark");
+
+  useEffect(() => {
+    setTheme((document.documentElement.getAttribute("data-theme") as Theme) || "dark");
+  }, []);
 
   const cat = profile.category || "E16";
   const D = useMemo(() => derive(profile, trips), [profile, trips]);
 
-  function refresh() {
-    startTransition(() => router.refresh());
+  function toggleTheme() {
+    const next: Theme = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    document.documentElement.setAttribute("data-theme", next);
+    void persistTheme(next);
   }
 
   function onSaveTrip(v: TripInput) {
@@ -66,20 +68,23 @@ export function AppClient({
 
   return (
     <main className="device" role="application" aria-label="Green Mile">
-      <div className="appbar">
-        <span className="who">
-          <span className="dot">●</span> {profile.handle || "resident"} <span className="cat">· {cat}</span>
-        </span>
-        <span className="spacer"></span>
-        <ThemeToggle />
-        <button className="mini" onClick={() => setProfileOpen(true)} title="edit profile">⚙ profile</button>
-        <button className="mini logout" onClick={() => startTransition(() => { logout(); })} title="sign out">⏻ logout</button>
-      </div>
+      <AppBar
+        handle={profile.handle || "resident"}
+        category={cat}
+        onAddTrip={() => setTripModal({ open: true, trip: null })}
+        onProfile={() => setProfileOpen(true)}
+        onExport={exportData}
+        onLogout={() => startTransition(() => { logout(); })}
+        onToggleTheme={toggleTheme}
+        themeLabel={theme === "dark" ? "light" : "dark"}
+      />
+      <StatusStrip D={D} />
 
       <div className="tabs" role="tablist" aria-label="Views">
-        {(["summary", "status", "travel", "alerts", "news"] as Tab[]).map((t) => (
+        {(["summary", "status", "travel", "alerts"] as Tab[]).map((t) => (
           <button
             key={t}
+            type="button"
             className="tab"
             role="tab"
             aria-selected={tab === t}
@@ -90,26 +95,21 @@ export function AppClient({
         ))}
       </div>
 
-      {tab === "summary" && <Summary D={D} cat={cat} />}
-      {tab === "status" && <Status D={D} profile={profile} cat={cat} onEditProfile={() => setProfileOpen(true)} />}
+      {tab === "summary" && <Summary D={D} cat={cat} onExport={exportData} />}
+      {tab === "status" && (
+        <Status D={D} profile={profile} cat={cat} onEditProfile={() => setProfileOpen(true)} onExport={exportData} />
+      )}
       {tab === "travel" && (
         <Travel
           D={D}
           cat={cat}
+          onExport={exportData}
           onAdd={() => setTripModal({ open: true, trip: null })}
           onEdit={(t) => setTripModal({ open: true, trip: t })}
           onDelete={onDeleteTrip}
         />
       )}
-      {tab === "alerts" && <Alerts D={D} cat={cat} />}
-      {tab === "news" && (
-        <div className="panel-tab active" role="tabpanel">
-          <div className="body">
-            <div className="comment">// USCIS &amp; DHS updates from the ingestion gateway.</div>
-            <NewsTab items={initialNews} />
-          </div>
-        </div>
-      )}
+      {tab === "alerts" && <Alerts D={D} cat={cat} onExport={exportData} />}
 
       <div className="foot">// working tracker, not legal advice · data as of <b>{iso(D.t)}</b></div>
 

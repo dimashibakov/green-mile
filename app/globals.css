@@ -1,5 +1,5 @@
 :root{
-  --mono:"JetBrains Mono",ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --mono:var(--font-mono),"JetBrains Mono",ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   --radius:16px;
 }
 
@@ -82,14 +82,28 @@ body{
 .cmd-link:hover{text-decoration:underline}
 .err{color:var(--red);font-style:italic;min-height:20px;margin-top:8px}
 .err:empty{margin:0}
-.appbar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line-soft);background:var(--screen)}
+.appbar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line-soft);background:linear-gradient(var(--panel-2),var(--screen))}
 .appbar .who{color:var(--text);font-weight:700}
 .appbar .who .dot{color:var(--green)}
 .appbar .who .cat{color:var(--orange);font-weight:400}
 .appbar .spacer{flex:1}
-.appbar .mini{background:var(--btn);border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:14px;cursor:pointer;padding:4px 6px;border-radius:7px}
-.appbar .mini:hover{color:var(--text);background:var(--panel-2)}
-.appbar .mini.logout:hover{color:var(--red)}
+.appbar .addbtn{border:1px solid #2b6b45;background:var(--btn-primary);color:var(--green);font-family:var(--mono);font-size:13px;font-weight:700;cursor:pointer;padding:5px 10px;border-radius:8px}
+.appbar .addbtn:hover{background:var(--btn-primary-h);border-color:var(--green)}
+.appbar .addbtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.ovfwrap{position:relative}
+.appbar .ovfbtn{background:none;border:1px solid transparent;color:var(--dim);font-family:var(--mono);font-size:18px;line-height:1;cursor:pointer;padding:3px 9px;border-radius:8px}
+.appbar .ovfbtn:hover{color:var(--text);background:var(--panel-2)}
+.appbar .ovfbtn[aria-expanded="true"]{color:var(--green);background:var(--btn-primary);border-color:#2b6b45}
+.ovf{position:absolute;right:0;top:36px;min-width:154px;background:var(--screen);border:1px solid var(--line);border-radius:10px;padding:6px;box-shadow:0 18px 40px -14px #000;z-index:30}
+.ovf[hidden]{display:none}
+.ovf .oi{display:flex;gap:9px;align-items:center;width:100%;text-align:left;background:none;border:none;color:var(--text);font-family:var(--mono);font-size:14px;cursor:pointer;padding:7px 9px;border-radius:7px}
+.ovf .oi .k{color:var(--dim);width:16px;text-align:center}
+.ovf .oi:hover{background:var(--panel-2)}
+.ovf .oi.logout:hover{color:var(--red)}
+.strip{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 14px;border-bottom:1px solid var(--line-soft);background:var(--screen);font-size:12.5px;color:var(--dim)}
+.strip b{font-weight:700}
+.strip .g{color:var(--green)} .strip .o{color:var(--orange)} .strip .r{color:var(--red)}
+.strip .sep{color:var(--line)}
 .tabs{display:flex;border-bottom:1px solid var(--line)}
 .tab{appearance:none;background:none;border:none;color:var(--dim);font-family:var(--mono);font-size:14px;font-weight:700;padding:13px 6px 11px;flex:1;cursor:pointer;position:relative;transition:color .15s}
 .tab:hover{color:#9fb0c2}
@@ -112,6 +126,8 @@ body{
 .metaline{color:var(--dim);margin:10px 0 2px}
 .badges{margin:4px 0 2px;color:var(--dim)}
 .badges b{color:var(--green);font-weight:700}
+.body .block{margin-top:14px;background:var(--panel);border:1px solid var(--line-soft);border-radius:12px;padding:13px 14px 14px}
+.body .block:first-of-type{margin-top:12px}
 .block{margin-top:22px}
 .block:first-of-type{margin-top:14px}
 .bhead{display:flex;align-items:baseline;gap:8px;font-weight:700}

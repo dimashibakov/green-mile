@@ -6,7 +6,7 @@ import { PromptBar } from "../components/PromptBar";
 
 type Alert = { c: string; i: string; h: string; d: React.ReactNode };
 
-export function Alerts({ D, cat }: { D: Derived; cat: string }) {
+export function Alerts({ D, cat, onExport }: { D: Derived; cat: string; onExport?: () => void }) {
   const anyOver = D.trips.some((x) => x.len >= 180);
   const alerts: Alert[] = [];
 
@@ -45,7 +45,7 @@ export function Alerts({ D, cat }: { D: Derived; cat: string }) {
 
   return (
     <div className="panel-tab active" role="tabpanel">
-      <PromptBar cat={cat} cmd="alerts" />
+      <PromptBar cat={cat} cmd="alerts" onExport={onExport} />
       <div className="body">
         <div className="comment">// live notices from your travel &amp; residency data.</div>
 

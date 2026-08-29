@@ -9,7 +9,7 @@ import { Gauge } from "../components/Gauge";
 import { Hbar } from "../components/Hbar";
 import { PromptBar } from "../components/PromptBar";
 
-export function Summary({ D, cat }: { D: Derived; cat: string }) {
+export function Summary({ D, cat, onExport }: { D: Derived; cat: string; onExport?: () => void }) {
   const [win, setWin] = useState("all");
   const anyOver = D.trips.some((x) => x.len >= 180);
   const ppPct = Math.min(1, D.present / PRESENCE_NEEDED);
@@ -19,7 +19,7 @@ export function Summary({ D, cat }: { D: Derived; cat: string }) {
 
   return (
     <div className="panel-tab active" role="tabpanel">
-      <PromptBar cat={cat} cmd="summary" />
+      <PromptBar cat={cat} cmd="summary" onExport={onExport} />
       <div className="body">
         <div className="comment">
           // <span className="em">{anyOver ? "a trip needs a closer look." : "all clear. keep banking in-US days."}</span>
