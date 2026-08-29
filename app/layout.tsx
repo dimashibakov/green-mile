@@ -17,11 +17,6 @@ export const metadata: Metadata = {
   description: "US green-card presence & travel-compliance tracker.",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "Green Mile", statusBarStyle: "black-translucent" },
-  icons: {
-    icon: [{ url: "/icon.png", type: "image/png" }],
-    apple: [{ url: "/apple-icon.png" }],
-    shortcut: ["/favicon.ico"],
-  },
 };
 
 export const viewport: Viewport = { themeColor: "#0a0e15" };
