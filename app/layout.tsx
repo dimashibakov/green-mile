@@ -31,8 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const theme: "dark" | "light" = c === "light" ? "light" : "dark";
 
   return (
-    <html lang="en" data-theme={theme} suppressHydrationWarning>
-      <body className={jetbrainsMono.variable}>{children}</body>
+    <html lang="en" data-theme={theme} className={jetbrainsMono.variable} suppressHydrationWarning>
+      <body>{children}</body>
     </html>
   );
 }
