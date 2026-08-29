@@ -54,16 +54,7 @@ export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] 
   }
 
   function exportData() {
-    try {
-      const payload = { profile, trips };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "green-mile-data.json";
-      a.click();
-    } catch {
-      /* no-op */
-    }
+    window.location.href = "/app/export";
   }
 
   return (
