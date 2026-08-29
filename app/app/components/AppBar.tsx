@@ -7,7 +7,8 @@ type AppBarProps = {
   category: string;
   onAddTrip: () => void;
   onProfile: () => void;
-  onExport: () => void;
+  onExportJson: () => void;
+  onExportPdf: () => void;
   onLogout: () => void;
   onToggleTheme?: () => void;
   themeLabel?: string;
@@ -18,7 +19,8 @@ export function AppBar({
   category,
   onAddTrip,
   onProfile,
-  onExport,
+  onExportJson,
+  onExportPdf,
   onLogout,
   onToggleTheme,
   themeLabel,
@@ -69,8 +71,11 @@ export function AppBar({
           <button type="button" className="oi" role="menuitem" onClick={() => { onProfile(); setOpen(false); }}>
             <span className="k">⚙</span> profile
           </button>
-          <button type="button" className="oi" role="menuitem" onClick={() => { onExport(); setOpen(false); }}>
-            <span className="k">⤴</span> export
+          <button type="button" className="oi" role="menuitem" onClick={() => { onExportJson(); setOpen(false); }}>
+            <span className="k">⤴</span> export JSON
+          </button>
+          <button type="button" className="oi" role="menuitem" onClick={() => { onExportPdf(); setOpen(false); }}>
+            <span className="k">⧉</span> export PDF
           </button>
           {onToggleTheme && (
             <button type="button" className="oi" role="menuitem" onClick={() => { onToggleTheme(); setOpen(false); }}>

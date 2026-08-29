@@ -53,8 +53,12 @@ export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] 
     startTransition(async () => { await saveProfile(v); router.refresh(); });
   }
 
-  function exportData() {
+  function exportJson() {
     window.location.href = "/app/export";
+  }
+
+  function exportPdf() {
+    window.location.href = "/app/export/pdf";
   }
 
   return (
@@ -64,7 +68,8 @@ export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] 
         category={cat}
         onAddTrip={() => setTripModal({ open: true, trip: null })}
         onProfile={() => setProfileOpen(true)}
-        onExport={exportData}
+        onExportJson={exportJson}
+        onExportPdf={exportPdf}
         onLogout={() => startTransition(() => { logout(); })}
         onToggleTheme={toggleTheme}
         themeLabel={theme === "dark" ? "light" : "dark"}
@@ -86,21 +91,21 @@ export function AppClient({ profile, trips }: { profile: Profile; trips: Trip[] 
         ))}
       </div>
 
-      {tab === "summary" && <Summary D={D} cat={cat} onExport={exportData} />}
+      {tab === "summary" && <Summary D={D} cat={cat} onExport={exportJson} />}
       {tab === "status" && (
-        <Status D={D} profile={profile} cat={cat} onEditProfile={() => setProfileOpen(true)} onExport={exportData} />
+        <Status D={D} profile={profile} cat={cat} onEditProfile={() => setProfileOpen(true)} onExport={exportJson} />
       )}
       {tab === "travel" && (
         <Travel
           D={D}
           cat={cat}
-          onExport={exportData}
+          onExport={exportJson}
           onAdd={() => setTripModal({ open: true, trip: null })}
           onEdit={(t) => setTripModal({ open: true, trip: t })}
           onDelete={onDeleteTrip}
         />
       )}
-      {tab === "alerts" && <Alerts D={D} cat={cat} onExport={exportData} />}
+      {tab === "alerts" && <Alerts D={D} cat={cat} onExport={exportJson} />}
 
       <div className="foot">// working tracker, not legal advice · data as of <b>{iso(D.t)}</b></div>
 
